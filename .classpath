@@ -6,6 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Genesys/Downloads/jcalendar-1.4/lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JCalendar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MySQL-Connector"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
