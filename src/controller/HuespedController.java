@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,102 +16,130 @@ public class HuespedController {
 
 	public List<Map<String, String>> listar() throws SQLException {
 
-		Connection con = new ConnectionFactory().recuperaConexion();
+		final Connection con = new ConnectionFactory().recuperaConexion();
 
-		Statement statement = con.createStatement();
+		try (con) {
 
-		statement.execute("SELECT id, nombre, apellido, fecha_nacimiento, nacionalidad, telefono FROM huesped");
+			PreparedStatement statement = con.prepareStatement(
+					"SELECT id, nombre, apellido, fecha_nacimiento, nacionalidad, telefono FROM huesped");
 
-		ResultSet resultSet = statement.getResultSet();
+			try (statement) {
 
-		List<Map<String, String>> resultado = new ArrayList<>();
+				statement.execute();
 
-		while (resultSet.next()) {
+				ResultSet resultSet = statement.getResultSet();
 
-			Map<String, String> fila = new HashMap<>();
-			fila.put("id", String.valueOf(resultSet.getInt("id")));
-			fila.put("nombre", resultSet.getString("nombre"));
-			fila.put("apellido", resultSet.getString("apellido"));
-			fila.put("fecha_nacimiento", resultSet.getString("fecha_nacimiento"));
-			fila.put("nacionalidad", resultSet.getString("nacionalidad"));
-			fila.put("telefono", resultSet.getString("telefono"));
+				List<Map<String, String>> resultado = new ArrayList<>();
 
-			resultado.add(fila);
+				while (resultSet.next()) {
 
+					Map<String, String> fila = new HashMap<>();
+					fila.put("id", String.valueOf(resultSet.getInt("id")));
+					fila.put("nombre", resultSet.getString("nombre"));
+					fila.put("apellido", resultSet.getString("apellido"));
+					fila.put("fecha_nacimiento", resultSet.getString("fecha_nacimiento"));
+					fila.put("nacionalidad", resultSet.getString("nacionalidad"));
+					fila.put("telefono", resultSet.getString("telefono"));
+
+					resultado.add(fila);
+
+				}
+
+				return resultado;
+
+			}
 		}
-
-		con.close();
-
-		return resultado;
 	}
 
 	public void guardar(Map<String, String> huesped) throws SQLException {
-		Connection con = new ConnectionFactory().recuperaConexion();
-		Statement createStatement = con.createStatement();
-		createStatement.execute("INSERT INTO huesped ("
 
-				+ "nombre, "
+		final Connection con = new ConnectionFactory().recuperaConexion();
 
-				+ "apellido, "
+		try (con) {
 
-				+ "fecha_nacimiento, "
+			final PreparedStatement statement = con.prepareStatement(
 
-				+ "nacionalidad, "
+					"INSERT INTO huesped (nombre, apellido, fecha_nacimiento, nacionalidad, telefono) "
 
-				+ "telefono) "
+							+ "VALUES (?, ?, ?, ?, ?)",
 
-				+ "VALUES("
+					Statement.RETURN_GENERATED_KEYS);
 
-				+ "'" + huesped.get("nombre") + "', "
+			try (statement) {
 
-				+ "'" + huesped.get("apellido") + "', "
+				statement.setString(1, huesped.get("nombre"));
+				statement.setString(2, huesped.get("apellido"));
+				statement.setString(3, huesped.get("fecha_nacimiento"));
+				statement.setString(4, huesped.get("nacionalidad"));
+				statement.setString(5, huesped.get("telefono"));
 
-				+ "'" + huesped.get("fecha_nacimiento") + "', "
+				statement.execute();
 
-				+ "'" + huesped.get("nacionalidad") + "', "
+				ResultSet generatedKeys = statement.getGeneratedKeys();
 
-				+ "'" + huesped.get("telefono") + "')", Statement.RETURN_GENERATED_KEYS);
+				while (generatedKeys.next()) {
 
-		ResultSet generatedKeys = createStatement.getGeneratedKeys();
+					System.out.println(String.format("Fue ingresado el huesped con ID %d", generatedKeys.getInt(1)));
 
-		while (generatedKeys.next()) {
+				}
 
-			System.out.println(String.format("Fue ingresado el huesped con ID %d", generatedKeys.getInt(1)));
+			}
 
 		}
+
 	}
 
 	public int eliminar(Integer id) throws SQLException {
 
-		Connection con = new ConnectionFactory().recuperaConexion();
+		final Connection con = new ConnectionFactory().recuperaConexion();
 
-		Statement statement = con.createStatement();
+		try (con) {
 
-		statement.execute("DELETE FROM huesped WHERE id = " + id);
+			final PreparedStatement statement = con.prepareStatement("DELETE FROM huesped WHERE id = ?");
 
-		return statement.getUpdateCount();
+			try (statement) {
 
+				statement.setInt(1, id);
+
+				statement.execute();
+
+				return statement.getUpdateCount();
+			}
+		}
 	}
 
 	public void actualizar(HashMap<String, String> huesped) throws SQLException {
-		Connection con = new ConnectionFactory().recuperaConexion();
 
-		Statement statement = con.createStatement();
+		final Connection con = new ConnectionFactory().recuperaConexion();
 
-		statement.execute("UPDATE huesped SET "
+		try (con) {
 
-				+ "nombre = '" + huesped.get("nombre") + "', "
+			final PreparedStatement statement = con.prepareStatement("UPDATE huesped SET "
 
-				+ "apellido = '" + huesped.get("apellido") + "', "
+					+ "nombre = ?"
 
-				+ "fecha_nacimiento = '" + huesped.get("fecha_nacimiento") + "', "
+					+ ", apellido = ?"
 
-				+ "nacionalidad = '" + huesped.get("nacionalidad") + "', "
+					+ ", fecha_nacimiento = ?"
 
-				+ "telefono = '" + huesped.get("telefono") + "'"
+					+ ", nacionalidad = ?"
 
-				+ "WHERE id =" + huesped.get("id") + "");
+					+ ", telefono = ?"
 
+					+ "WHERE id = ?");
+
+			try (statement) {
+
+				statement.setString(1, huesped.get("nombre"));
+				statement.setString(2, huesped.get("apellido"));
+				statement.setString(3, huesped.get("fecha_nacimiento"));
+				statement.setString(4, huesped.get("nacionalidad"));
+				statement.setString(5, huesped.get("telefono"));
+				statement.setInt(6, Integer.parseInt(huesped.get("id")));
+
+				statement.execute();
+
+			}
+		}
 	}
-
 }
