@@ -1,31 +1,32 @@
 package views;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Optional;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.HuespedController;
-
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import java.awt.Color;
-import java.awt.SystemColor;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.Optional;
-import java.awt.event.ActionEvent;
-import javax.swing.JTabbedPane;
-import java.awt.Toolkit;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -89,6 +90,17 @@ public class Busqueda extends JFrame {
 		contentPane.add(btnBuscar);
 
 		JButton btnEditar = new JButton("");
+
+		btnEditar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				editar();
+
+			}
+		});
+
 		btnEditar.setIcon(new ImageIcon(Busqueda.class.getResource("/imagenes/editar-texto.png")));
 		btnEditar.setBackground(SystemColor.menu);
 		btnEditar.setBounds(587, 416, 54, 41);
@@ -123,7 +135,8 @@ public class Busqueda extends JFrame {
 
 		modelo = (DefaultTableModel) tbHuespedes.getModel();
 		modelo.addColumn("Identificador");
-		modelo.addColumn("Nombre y Apellido");
+		modelo.addColumn("Nombre");
+		modelo.addColumn("Apellido");
 		modelo.addColumn("Fecha de Nacimiento");
 		modelo.addColumn("Nacionalidad");
 		modelo.addColumn("Teléfono");
@@ -158,6 +171,17 @@ public class Busqueda extends JFrame {
 		contentPane.add(btnEliminar);
 
 		JButton btnCancelar = new JButton("");
+
+		btnCancelar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				cancelar();
+
+			}
+		});
+
 		btnCancelar.setIcon(new ImageIcon(Busqueda.class.getResource("/imagenes/cancelar.png")));
 		btnCancelar.setBackground(SystemColor.menu);
 		btnCancelar.setBounds(713, 416, 54, 41);
@@ -168,6 +192,57 @@ public class Busqueda extends JFrame {
 		lblNewLabel_2.setBounds(25, 10, 104, 107);
 		contentPane.add(lblNewLabel_2);
 		setResizable(false);
+	}
+
+	protected void cancelar() {
+
+		tbHuespedes.clearSelection();
+
+	}
+
+	protected void editar() { // Carga los datos en la view RegistroHUesped
+
+		if (!tieneFilaElegida()) {
+
+			JOptionPane.showMessageDialog(this, "Por favor, elije un item.");
+			return;
+
+		}
+
+		Optional.ofNullable(modelo.getValueAt(tbHuespedes.getSelectedRow(), tbHuespedes.getSelectedColumn()))
+
+				.ifPresentOrElse(fila -> {
+
+					String id = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 0);
+					String nombre = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 1);
+					String apellido = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 2);
+					String fechaNacimiento = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 3);
+					String nacionalidad = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 4);
+					String telefono = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 5);
+
+					Date date = null;
+
+					try {
+						date = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimiento);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					RegistroHuesped registroHuesped = new RegistroHuesped();
+					registroHuesped.setTituloFormulario("Edición de Huésped");
+					registroHuesped.setTxtNombre(nombre);
+					registroHuesped.setTxtApellido(apellido);
+					registroHuesped.setTxtFechaN(date);
+					registroHuesped.setTxtNacionalidad(nacionalidad);
+					registroHuesped.setTxtTelefono(telefono);
+					registroHuesped.setIdBtnGuardar(id);
+					registroHuesped.setIdBtnCancelar(id);
+					registroHuesped.setVisible(true);
+					dispose();
+
+				}, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item."));
+
 	}
 
 	protected void eliminar() {
@@ -184,9 +259,9 @@ public class Busqueda extends JFrame {
 				.ifPresentOrElse(fila -> {
 
 					Integer id = Integer.parseInt(modelo.getValueAt(tbHuespedes.getSelectedRow(), 0).toString());
-					
+
 					int cantidadEliminada;
-					
+
 					try {
 						cantidadEliminada = this.huespedController.eliminar(id);
 					} catch (SQLException e) {
@@ -200,7 +275,7 @@ public class Busqueda extends JFrame {
 				}, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item."));
 
 	}
-	
+
 	private void limpiarTabla() {
 		modelo.getDataVector().clear();
 	}
@@ -215,8 +290,8 @@ public class Busqueda extends JFrame {
 
 			var huespedes = this.huespedController.listar();
 
-			huespedes.forEach(
-					huesped -> modelo.addRow(new Object[] { huesped.get("id"), huesped.get("nombre") + " " + huesped.get("apellido"),
+			huespedes.forEach(huesped -> modelo
+					.addRow(new Object[] { huesped.get("id"), huesped.get("nombre"), huesped.get("apellido"),
 							huesped.get("fecha_nacimiento"), huesped.get("nacionalidad"), huesped.get("telefono") }));
 
 		} catch (Exception e) {

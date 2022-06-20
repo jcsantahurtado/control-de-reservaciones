@@ -92,4 +92,25 @@ public class HuespedController {
 
 	}
 
+	public void actualizar(HashMap<String, String> huesped) throws SQLException {
+		Connection con = new ConnectionFactory().recuperaConexion();
+
+		Statement statement = con.createStatement();
+
+		statement.execute("UPDATE huesped SET "
+
+				+ "nombre = '" + huesped.get("nombre") + "', "
+
+				+ "apellido = '" + huesped.get("apellido") + "', "
+
+				+ "fecha_nacimiento = '" + huesped.get("fecha_nacimiento") + "', "
+
+				+ "nacionalidad = '" + huesped.get("nacionalidad") + "', "
+
+				+ "telefono = '" + huesped.get("telefono") + "'"
+
+				+ "WHERE id =" + huesped.get("id") + "");
+
+	}
+
 }

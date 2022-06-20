@@ -8,11 +8,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -33,12 +30,16 @@ import controller.HuespedController;
 public class RegistroHuesped extends JFrame {
 
 	private JPanel contentPane;
+	private JLabel lblTituloFormulario;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
 	private JDateChooser txtFechaN;
 	private JComboBox<String> txtNacionalidad;
 	private JTextField txtTelefono;
 	private JTextField txtNreserva;
+	private JButton btnGuardar;
+	private JButton btnCancelar;
+	private JButton btnSalir;
 
 	private HuespedController huespedController;
 
@@ -71,7 +72,49 @@ public class RegistroHuesped extends JFrame {
 	}
 
 	private void configurarAccionesRegistro() {
-		// TODO Auto-generated method stub
+
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				Object id = btnGuardar.getClientProperty("id");
+
+				if (id != null) {
+
+					actualizar(id);
+
+				} else {
+
+					guardar();
+
+				}
+
+			}
+		});
+
+		btnCancelar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Object id = btnCancelar.getClientProperty("id");
+
+				if (id != null) {
+
+					Busqueda busqueda = new Busqueda();
+					busqueda.setVisible(true);
+					dispose();
+
+				}
+			}
+		});
+
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MenuUsuario usuario = new MenuUsuario();
+				usuario.setVisible(true);
+				dispose();
+			}
+		});
 
 	}
 
@@ -99,12 +142,13 @@ public class RegistroHuesped extends JFrame {
 
 		txtFechaN = new JDateChooser();
 		txtFechaN.setBounds(576, 281, 255, 33);
+
 		contentPane.add(txtFechaN);
 
 		txtNacionalidad = new JComboBox<String>();
 		txtNacionalidad.setFont(new Font("Arial", Font.PLAIN, 14));
-		txtNacionalidad.setModel(new DefaultComboBoxModel<String>(new String[] { "Afghanistan – Afeganistão", "Afghan – afegão",
-				"Andorra – Andorra", "Andorran – andorrano", "Angola – Angola", "Angolan – angolano",
+		txtNacionalidad.setModel(new DefaultComboBoxModel<String>(new String[] { "Afghanistan – Afeganistão",
+				"Afghan – afegão", "Andorra – Andorra", "Andorran – andorrano", "Angola – Angola", "Angolan – angolano",
 				"Antigua e Barbuda – Antígua e Barbuda", "Antiguan/Barbudan – antiguano", "Algeria – Argélia",
 				"Algerian – argelino", "Argentina – Argentina", "Argentinian – argentino", "Armenia – Armênia",
 				"Armenian – armênio", "Australia – Austrália", "Australian – australiano", "Austria – Áustria",
@@ -238,33 +282,25 @@ public class RegistroHuesped extends JFrame {
 		lblNewLabel.setBounds(0, 0, 502, 556);
 		contentPane.add(lblNewLabel);
 
-		JButton btnCancelar = new JButton("");
+//		JButton btnCancelar = new JButton("");
+		btnCancelar = new JButton("");
+
 		btnCancelar.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/cancelar.png")));
 		btnCancelar.setBackground(SystemColor.menu);
 		btnCancelar.setBounds(764, 543, 54, 41);
 		contentPane.add(btnCancelar);
 
-		JButton btnGuardar = new JButton("");
-		btnGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+//		JButton btnGuardar = new JButton("");
+		btnGuardar = new JButton("");
 
-				guardar();
-
-			}
-		});
 		btnGuardar.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/disquete.png")));
 		btnGuardar.setBackground(SystemColor.menu);
 		btnGuardar.setBounds(700, 543, 54, 41);
 		contentPane.add(btnGuardar);
 
-		JButton btnSalir = new JButton("");
-		btnSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MenuUsuario usuario = new MenuUsuario();
-				usuario.setVisible(true);
-				dispose();
-			}
-		});
+//		JButton btnSalir = new JButton("");
+		btnSalir = new JButton("");
+
 		btnSalir.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/cerrar-sesion 32-px.png")));
 		btnSalir.setBackground(SystemColor.menu);
 		btnSalir.setBounds(828, 543, 54, 41);
@@ -286,11 +322,12 @@ public class RegistroHuesped extends JFrame {
 		lblNewLabel_2.setBounds(780, 11, 104, 107);
 		contentPane.add(lblNewLabel_2);
 
-		JLabel lblNewLabel_4 = new JLabel("Registro de Huésped");
-		lblNewLabel_4.setForeground(new Color(12, 138, 199));
-		lblNewLabel_4.setFont(new Font("Arial", Font.BOLD, 20));
-		lblNewLabel_4.setBounds(576, 74, 198, 42);
-		contentPane.add(lblNewLabel_4);
+//		JLabel lblTituloFormulario = new JLabel("Registro de Huésped");
+		lblTituloFormulario = new JLabel("Registro de Huésped");
+		lblTituloFormulario.setForeground(new Color(12, 138, 199));
+		lblTituloFormulario.setFont(new Font("Arial", Font.BOLD, 20));
+		lblTituloFormulario.setBounds(576, 74, 198, 42);
+		contentPane.add(lblTituloFormulario);
 
 		JLabel lblNewLabel_1_2_1 = new JLabel("Número de Reserva");
 		lblNewLabel_1_2_1.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -305,6 +342,34 @@ public class RegistroHuesped extends JFrame {
 		contentPane.add(txtNreserva);
 	}
 
+	protected void actualizar(Object id) {
+
+		java.sql.Date sqlDate = new java.sql.Date(txtFechaN.getDate().getTime());
+
+		var huesped = new HashMap<String, String>();
+		huesped.put("nombre", txtNombre.getText());
+		huesped.put("apellido", txtApellido.getText());
+		huesped.put("fecha_nacimiento", sqlDate.toString());
+		huesped.put("nacionalidad", txtNacionalidad.getSelectedItem().toString());
+		huesped.put("telefono", txtTelefono.getText());
+		huesped.put("id", (String) id);
+
+		try {
+			this.huespedController.actualizar(huesped);
+
+			JOptionPane.showMessageDialog(this, "Registro actualizado.");
+
+			Busqueda busqueda = new Busqueda();
+			busqueda.setVisible(true);
+			dispose();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 	protected void guardar() {
 
 		if (txtNombre.getText().isBlank() || txtApellido.getText().isBlank() || txtTelefono.getText().isBlank()) {
@@ -312,32 +377,17 @@ public class RegistroHuesped extends JFrame {
 			return;
 		}
 
-		System.out.println(txtFechaN.getDateFormatString());
-		System.out.println(txtFechaN.getDate());
-		
-		LocalDate fechaNacimiento = null;
-
-		try {
-
-			DateTimeFormatter f = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss z uuuu").withLocale(Locale.US);
-			ZonedDateTime zdt = ZonedDateTime.parse(txtFechaN.getDate().toString(), f);
-			LocalDate ld = zdt.toLocalDate();
-			
-			fechaNacimiento = ld;
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		java.sql.Date sqlDate = new java.sql.Date(txtFechaN.getDate().getTime());
 
 		var huesped = new HashMap<String, String>();
 		huesped.put("nombre", txtNombre.getText());
 		huesped.put("apellido", txtApellido.getText());
-		huesped.put("fecha_nacimiento", fechaNacimiento.toString());
+		huesped.put("fecha_nacimiento", sqlDate.toString());
 		huesped.put("nacionalidad", txtNacionalidad.getSelectedItem().toString());
 		huesped.put("telefono", txtTelefono.getText());
 
 		try {
-			
+
 			this.huespedController.guardar(huesped);
 
 			Exito exito = new Exito();
@@ -350,4 +400,45 @@ public class RegistroHuesped extends JFrame {
 		}
 
 	}
+
+	public static java.sql.Date convertUtilDateToSqlDate(java.util.Date date) {
+		if (date != null) {
+			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+			return sqlDate;
+		}
+		return null;
+	}
+
+	public void setTituloFormulario(String titulo) {
+		this.lblTituloFormulario.setText(titulo);
+	}
+
+	public void setTxtNombre(String nombre) {
+		this.txtNombre.setText(nombre);
+	}
+
+	public void setTxtApellido(String apellido) {
+		this.txtApellido.setText(apellido);
+	}
+
+	public void setTxtFechaN(Date date) {
+		this.txtFechaN.setDate(date);
+	}
+
+	public void setTxtNacionalidad(String nacionalidad) {
+		this.txtNacionalidad.setSelectedItem(nacionalidad);
+	}
+
+	public void setTxtTelefono(String telefono) {
+		this.txtTelefono.setText(telefono);
+	}
+
+	public void setIdBtnGuardar(String id) {
+		this.btnGuardar.putClientProperty("id", id);
+	}
+
+	public void setIdBtnCancelar(String id) {
+		this.btnCancelar.putClientProperty("id", id);
+	}
+
 }
