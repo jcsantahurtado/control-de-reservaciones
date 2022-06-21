@@ -7,9 +7,7 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.Date;
-import java.util.HashMap;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -25,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import controller.HuespedController;
+import model.Huesped;
 
 @SuppressWarnings("serial")
 public class RegistroHuesped extends JFrame {
@@ -76,7 +75,7 @@ public class RegistroHuesped extends JFrame {
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				Object id = btnGuardar.getClientProperty("id");
+				String id = btnGuardar.getClientProperty("id").toString();
 
 				if (id != null) {
 
@@ -342,31 +341,20 @@ public class RegistroHuesped extends JFrame {
 		contentPane.add(txtNreserva);
 	}
 
-	protected void actualizar(Object id) {
+	protected void actualizar(String id) {
 
 		java.sql.Date sqlDate = new java.sql.Date(txtFechaN.getDate().getTime());
 
-		var huesped = new HashMap<String, String>();
-		huesped.put("nombre", txtNombre.getText());
-		huesped.put("apellido", txtApellido.getText());
-		huesped.put("fecha_nacimiento", sqlDate.toString());
-		huesped.put("nacionalidad", txtNacionalidad.getSelectedItem().toString());
-		huesped.put("telefono", txtTelefono.getText());
-		huesped.put("id", (String) id);
+		var huesped = new Huesped(Integer.parseInt(id), txtNombre.getText(), txtApellido.getText(), sqlDate,
+				txtNacionalidad.getSelectedItem().toString(), txtTelefono.getText());
 
-		try {
-			this.huespedController.actualizar(huesped);
+		this.huespedController.actualizar(huesped);
 
-			JOptionPane.showMessageDialog(this, "Registro actualizado.");
+		JOptionPane.showMessageDialog(this, "Actualizado con Exito.");
 
-			Busqueda busqueda = new Busqueda();
-			busqueda.setVisible(true);
-			dispose();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Busqueda busqueda = new Busqueda();
+		busqueda.setVisible(true);
+		dispose();
 
 	}
 
@@ -379,25 +367,15 @@ public class RegistroHuesped extends JFrame {
 
 		java.sql.Date sqlDate = new java.sql.Date(txtFechaN.getDate().getTime());
 
-		var huesped = new HashMap<String, String>();
-		huesped.put("nombre", txtNombre.getText());
-		huesped.put("apellido", txtApellido.getText());
-		huesped.put("fecha_nacimiento", sqlDate.toString());
-		huesped.put("nacionalidad", txtNacionalidad.getSelectedItem().toString());
-		huesped.put("telefono", txtTelefono.getText());
+		var huesped = new Huesped(txtNombre.getText(), txtApellido.getText(), sqlDate,
+				txtNacionalidad.getSelectedItem().toString(), txtTelefono.getText());
 
-		try {
+		this.huespedController.guardar(huesped);
 
-			this.huespedController.guardar(huesped);
-
-			Exito exito = new Exito();
-			exito.setVisible(true);
-			dispose();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// revisar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		Exito exito = new Exito();
+		exito.setVisible(true);
+		dispose();
 
 	}
 

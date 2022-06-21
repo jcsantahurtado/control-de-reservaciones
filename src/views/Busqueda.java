@@ -7,7 +7,6 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -213,10 +212,10 @@ public class Busqueda extends JFrame {
 
 				.ifPresentOrElse(fila -> {
 
-					String id = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 0);
+					String id = modelo.getValueAt(tbHuespedes.getSelectedRow(), 0).toString();
 					String nombre = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 1);
 					String apellido = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 2);
-					String fechaNacimiento = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 3);
+					String fechaNacimiento = modelo.getValueAt(tbHuespedes.getSelectedRow(), 3).toString();
 					String nacionalidad = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 4);
 					String telefono = (String) modelo.getValueAt(tbHuespedes.getSelectedRow(), 5);
 
@@ -262,11 +261,7 @@ public class Busqueda extends JFrame {
 
 					int cantidadEliminada;
 
-					try {
-						cantidadEliminada = this.huespedController.eliminar(id);
-					} catch (SQLException e) {
-						throw new RuntimeException(e);
-					}
+					cantidadEliminada = this.huespedController.eliminar(id);
 
 					modelo.removeRow(tbHuespedes.getSelectedRow());
 
@@ -286,17 +281,11 @@ public class Busqueda extends JFrame {
 
 	private void cargarTablaHuespedes() {
 
-		try {
+		var huespedes = this.huespedController.listar();
 
-			var huespedes = this.huespedController.listar();
-
-			huespedes.forEach(huesped -> modelo
-					.addRow(new Object[] { huesped.get("id"), huesped.get("nombre"), huesped.get("apellido"),
-							huesped.get("fecha_nacimiento"), huesped.get("nacionalidad"), huesped.get("telefono") }));
-
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		huespedes.forEach(
+				huesped -> modelo.addRow(new Object[] { huesped.getId(), huesped.getNombre(), huesped.getApellido(),
+						huesped.getFechaNacimiento(), huesped.getNacionalidad(), huesped.getTelefono() }));
 
 	}
 
