@@ -1,7 +1,5 @@
-/factory/
-/pruebas/
-/model/
 /views/
+/model/
 /controller/
-/persistencia/
 /dao/
+/pruebas/

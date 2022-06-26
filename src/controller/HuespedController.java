@@ -37,4 +37,5 @@ public class HuespedController {
 		huespedDAO.actualiar(huesped);
 
 	}
+
 }

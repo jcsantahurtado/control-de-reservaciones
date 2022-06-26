@@ -8,26 +8,29 @@ public class Huesped {
 	private java.sql.Date fechaNacimiento;
 	private String nacionalidad;
 	private String telefono;
+	private Integer idReserva;
 
-	public Huesped(String nombre, String apellido, java.sql.Date fechaNacimiento, String nacionalidad,
-			String telefono) {
+	public Huesped(String nombre, String apellido, java.sql.Date fechaNacimiento, String nacionalidad, String telefono,
+			Integer idReserva) {
 
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
 		this.nacionalidad = nacionalidad;
 		this.telefono = telefono;
+		this.idReserva = idReserva;
 
 	}
 
-	public Huesped(int id, String nombre, String apellido, java.sql.Date fechaNacimiento, String nacionalidad,
-			String telefono) {
+	public Huesped(Integer id, String nombre, String apellido, java.sql.Date fechaNacimiento, String nacionalidad,
+			String telefono, Integer idReserva) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
 		this.nacionalidad = nacionalidad;
 		this.telefono = telefono;
+		this.idReserva = idReserva;
 	}
 
 	public String getNombre() {
@@ -50,11 +53,15 @@ public class Huesped {
 		return this.telefono;
 	}
 
+	public Integer getIdReserva() {
+		return this.idReserva;
+	}
+
 	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

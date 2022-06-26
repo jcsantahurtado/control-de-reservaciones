@@ -20,13 +20,15 @@ public class HuespedDAO {
 
 	public void guardar(Huesped huesped) {
 
-		try (con) {
+		System.out.println("guardar");
+
+		try {
 
 			final PreparedStatement statement = con.prepareStatement(
 
-					"INSERT INTO huesped (nombre, apellido, fecha_nacimiento, nacionalidad, telefono) "
+					"INSERT INTO huesped (nombre, apellido, fecha_nacimiento, nacionalidad, telefono, reserva_id) "
 
-							+ "VALUES (?, ?, ?, ?, ?)",
+							+ "VALUES (?, ?, ?, ?, ?, ?)",
 
 					Statement.RETURN_GENERATED_KEYS);
 
@@ -49,6 +51,7 @@ public class HuespedDAO {
 		statement.setDate(3, huesped.getFechaNacimiento());
 		statement.setString(4, huesped.getNacionalidad());
 		statement.setString(5, huesped.getTelefono());
+		statement.setInt(6, huesped.getIdReserva());
 
 		statement.execute();
 
@@ -67,10 +70,12 @@ public class HuespedDAO {
 
 		List<Huesped> resultado = new ArrayList<>();
 
-		try (con) {
+		System.out.println("Listar");
+
+		try {
 
 			final PreparedStatement statement = con.prepareStatement(
-					"SELECT id, nombre, apellido, fecha_nacimiento, nacionalidad, telefono FROM huesped");
+					"SELECT id, nombre, apellido, fecha_nacimiento, nacionalidad, telefono, reserva_id FROM huesped");
 
 			try (statement) {
 
@@ -82,7 +87,8 @@ public class HuespedDAO {
 
 					Huesped fila = new Huesped(resultSet.getInt("id"), resultSet.getString("nombre"),
 							resultSet.getString("apellido"), resultSet.getDate("fecha_nacimiento"),
-							resultSet.getString("nacionalidad"), resultSet.getString("telefono"));
+							resultSet.getString("nacionalidad"), resultSet.getString("telefono"),
+							resultSet.getInt("reserva_id"));
 
 					resultado.add(fila);
 
@@ -97,7 +103,9 @@ public class HuespedDAO {
 
 	public int eliminar(Integer id) {
 
-		try (con) {
+		System.out.println(id);
+
+		try {
 
 			final PreparedStatement statement = con.prepareStatement("DELETE FROM huesped WHERE id = ?");
 
@@ -116,6 +124,8 @@ public class HuespedDAO {
 	}
 
 	public void actualiar(Huesped huesped) {
+
+		System.out.println("actualizar");
 
 		try (con) {
 

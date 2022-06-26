@@ -7,7 +7,6 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -24,6 +23,7 @@ import com.toedter.calendar.JDateChooser;
 
 import controller.HuespedController;
 import model.Huesped;
+import model.Reserva;
 
 @SuppressWarnings("serial")
 public class RegistroHuesped extends JFrame {
@@ -41,6 +41,8 @@ public class RegistroHuesped extends JFrame {
 	private JButton btnSalir;
 
 	private HuespedController huespedController;
+
+	private Huesped huesped;
 
 	/**
 	 * Launch the application.
@@ -65,7 +67,7 @@ public class RegistroHuesped extends JFrame {
 
 		this.huespedController = new HuespedController();
 
-		configurarContenidoRegistro();
+		configurarFormularioRegistro();
 		configurarAccionesRegistro();
 
 	}
@@ -75,11 +77,9 @@ public class RegistroHuesped extends JFrame {
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				String id = btnGuardar.getClientProperty("id").toString();
+				if (huesped != null) {
 
-				if (id != null) {
-
-					actualizar(id);
+					actualizar(String.valueOf(huesped.getId()));
 
 				} else {
 
@@ -95,9 +95,7 @@ public class RegistroHuesped extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				Object id = btnCancelar.getClientProperty("id");
-
-				if (id != null) {
+				if (huesped != null) {
 
 					Busqueda busqueda = new Busqueda();
 					busqueda.setVisible(true);
@@ -117,7 +115,8 @@ public class RegistroHuesped extends JFrame {
 
 	}
 
-	private void configurarContenidoRegistro() {
+	private void configurarFormularioRegistro() {
+
 		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHuesped.class.getResource("/imagenes/persona.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 634);
@@ -281,25 +280,19 @@ public class RegistroHuesped extends JFrame {
 		lblNewLabel.setBounds(0, 0, 502, 556);
 		contentPane.add(lblNewLabel);
 
-//		JButton btnCancelar = new JButton("");
 		btnCancelar = new JButton("");
-
 		btnCancelar.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/cancelar.png")));
 		btnCancelar.setBackground(SystemColor.menu);
 		btnCancelar.setBounds(764, 543, 54, 41);
 		contentPane.add(btnCancelar);
 
-//		JButton btnGuardar = new JButton("");
 		btnGuardar = new JButton("");
-
 		btnGuardar.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/disquete.png")));
 		btnGuardar.setBackground(SystemColor.menu);
 		btnGuardar.setBounds(700, 543, 54, 41);
 		contentPane.add(btnGuardar);
 
-//		JButton btnSalir = new JButton("");
 		btnSalir = new JButton("");
-
 		btnSalir.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/cerrar-sesion 32-px.png")));
 		btnSalir.setBackground(SystemColor.menu);
 		btnSalir.setBounds(828, 543, 54, 41);
@@ -321,7 +314,6 @@ public class RegistroHuesped extends JFrame {
 		lblNewLabel_2.setBounds(780, 11, 104, 107);
 		contentPane.add(lblNewLabel_2);
 
-//		JLabel lblTituloFormulario = new JLabel("Registro de Huésped");
 		lblTituloFormulario = new JLabel("Registro de Huésped");
 		lblTituloFormulario.setForeground(new Color(12, 138, 199));
 		lblTituloFormulario.setFont(new Font("Arial", Font.BOLD, 20));
@@ -346,7 +338,8 @@ public class RegistroHuesped extends JFrame {
 		java.sql.Date sqlDate = new java.sql.Date(txtFechaN.getDate().getTime());
 
 		var huesped = new Huesped(Integer.parseInt(id), txtNombre.getText(), txtApellido.getText(), sqlDate,
-				txtNacionalidad.getSelectedItem().toString(), txtTelefono.getText());
+				txtNacionalidad.getSelectedItem().toString(), txtTelefono.getText(),
+				Integer.parseInt(txtNreserva.getText()));
 
 		this.huespedController.actualizar(huesped);
 
@@ -368,55 +361,36 @@ public class RegistroHuesped extends JFrame {
 		java.sql.Date sqlDate = new java.sql.Date(txtFechaN.getDate().getTime());
 
 		var huesped = new Huesped(txtNombre.getText(), txtApellido.getText(), sqlDate,
-				txtNacionalidad.getSelectedItem().toString(), txtTelefono.getText());
+				txtNacionalidad.getSelectedItem().toString(), txtTelefono.getText(),
+				Integer.parseInt(txtNreserva.getText()));
 
 		this.huespedController.guardar(huesped);
 
-		// revisar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		Exito exito = new Exito();
 		exito.setVisible(true);
 		dispose();
 
 	}
 
-	public static java.sql.Date convertUtilDateToSqlDate(java.util.Date date) {
-		if (date != null) {
-			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-			return sqlDate;
-		}
-		return null;
+	public void configurarDatosHuespedEnFormulario(Huesped huesped) {
+
+		lblTituloFormulario.setText("Edición de Huésped");
+
+		txtNombre.setText(huesped.getNombre());
+		txtApellido.setText(huesped.getApellido());
+		txtFechaN.setDate(huesped.getFechaNacimiento());
+		txtNacionalidad.setSelectedItem(huesped.getNacionalidad());
+		txtTelefono.setText(huesped.getTelefono());
+		txtNreserva.setText("" + huesped.getIdReserva());
+
+		this.huesped = huesped;
+
 	}
 
-	public void setTituloFormulario(String titulo) {
-		this.lblTituloFormulario.setText(titulo);
-	}
+	public void configurarDatosReserva(Reserva reserva) {
 
-	public void setTxtNombre(String nombre) {
-		this.txtNombre.setText(nombre);
-	}
+		txtNreserva.setText("" + reserva.getId());
 
-	public void setTxtApellido(String apellido) {
-		this.txtApellido.setText(apellido);
-	}
-
-	public void setTxtFechaN(Date date) {
-		this.txtFechaN.setDate(date);
-	}
-
-	public void setTxtNacionalidad(String nacionalidad) {
-		this.txtNacionalidad.setSelectedItem(nacionalidad);
-	}
-
-	public void setTxtTelefono(String telefono) {
-		this.txtTelefono.setText(telefono);
-	}
-
-	public void setIdBtnGuardar(String id) {
-		this.btnGuardar.putClientProperty("id", id);
-	}
-
-	public void setIdBtnCancelar(String id) {
-		this.btnCancelar.putClientProperty("id", id);
 	}
 
 }
