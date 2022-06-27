@@ -20,8 +20,6 @@ public class HuespedDAO {
 
 	public void guardar(Huesped huesped) {
 
-		System.out.println("guardar");
-
 		try {
 
 			final PreparedStatement statement = con.prepareStatement(
@@ -70,12 +68,11 @@ public class HuespedDAO {
 
 		List<Huesped> resultado = new ArrayList<>();
 
-		System.out.println("Listar");
-
 		try {
 
-			final PreparedStatement statement = con.prepareStatement(
-					"SELECT id, nombre, apellido, fecha_nacimiento, nacionalidad, telefono, reserva_id FROM huesped");
+			var querySelect = "SELECT id, nombre, apellido, fecha_nacimiento, nacionalidad, telefono, reserva_id FROM huesped";
+
+			final PreparedStatement statement = con.prepareStatement(querySelect);
 
 			try (statement) {
 
@@ -124,8 +121,6 @@ public class HuespedDAO {
 	}
 
 	public void actualiar(Huesped huesped) {
-
-		System.out.println("actualizar");
 
 		try (con) {
 
