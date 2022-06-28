@@ -1,26 +1,34 @@
 package views;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
 import java.awt.Font;
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import controller.UserController;
+import model.User;
+
+@SuppressWarnings("serial")
 public class Login extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JPasswordField txtContrasena;
+
+	private JButton btnLogin, btnCancelar;
+
+	private UserController userController;
 
 	/**
 	 * Launch the application.
@@ -42,6 +50,76 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+
+		this.userController = new UserController();
+
+		configurarContenido();
+		configurarAccionesDelUsuario();
+	}
+
+	private void configurarAccionesDelUsuario() {
+
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				iniciarSesion();
+
+			}
+		});
+
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				cancelar();
+
+			}
+		});
+
+	}
+
+	protected void cancelar() {
+
+		MenuPrincipal menuPrincipal = new MenuPrincipal();
+		menuPrincipal.setVisible(true);
+		dispose();
+
+	}
+
+	protected void iniciarSesion() {
+
+		if (txtUsuario.getText().isBlank() || String.valueOf(txtContrasena.getPassword()).isBlank()) {
+
+			JOptionPane.showMessageDialog(this, "Todos los campos son requeridos.");
+			return;
+
+		}
+
+		var user = new User(txtUsuario.getText(), String.valueOf(txtContrasena.getPassword()));
+
+		this.userController.login(user);
+
+		if (user.getId() != null) {
+			MenuUsuario usuario = new MenuUsuario();
+			usuario.setVisible(true);
+			dispose();
+		} else {
+			JOptionPane.showMessageDialog(this, "Usurio y/o contraseña incorrectos.");
+			JOptionPane.showMessageDialog(this,
+
+					"Intenta con: "
+
+							+ System.lineSeparator()
+
+							+ "Usuario = admin"
+
+							+ System.lineSeparator()
+
+							+ "Contraseña = 1234");
+		}
+
+	}
+
+	private void configurarContenido() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/imagenes/perfil-del-usuario.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 538);
@@ -50,50 +128,43 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
-		
-		JLabel lblNewLabel = new JLabel("New label");
+
+		JLabel lblNewLabel = new JLabel("Iniciar Sesión");
 		lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/imagenes/hotel.png")));
 		lblNewLabel.setBounds(-53, 0, 422, 499);
 		contentPane.add(lblNewLabel);
-		
+
 		txtUsuario = new JTextField();
 		txtUsuario.setColumns(10);
 		txtUsuario.setBounds(409, 181, 234, 33);
 		contentPane.add(txtUsuario);
-		
-		JLabel lblNewLabel_1_1_1 = new JLabel("Usuário");
+
+		JLabel lblNewLabel_1_1_1 = new JLabel("Usuario");
 		lblNewLabel_1_1_1.setFont(new Font("Arial", Font.PLAIN, 14));
 		lblNewLabel_1_1_1.setBounds(409, 156, 57, 14);
 		contentPane.add(lblNewLabel_1_1_1);
-		
+
 		txtContrasena = new JPasswordField();
 		txtContrasena.setBounds(409, 261, 234, 33);
 		contentPane.add(txtContrasena);
-		
+
 		JLabel lblNewLabel_1_1_1_1 = new JLabel("Contraseña");
 		lblNewLabel_1_1_1_1.setFont(new Font("Arial", Font.PLAIN, 14));
 		lblNewLabel_1_1_1_1.setBounds(409, 236, 133, 14);
 		contentPane.add(lblNewLabel_1_1_1_1);
-		
-		JButton btnLogin = new JButton("Login");
+
+		btnLogin = new JButton("Login");
 		btnLogin.setIcon(new ImageIcon(Login.class.getResource("/imagenes/perfil-del-usuario.png")));
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MenuUsuario usuario = new MenuUsuario();
-				usuario.setVisible(true);
-				dispose();
-			}
-		});
 		btnLogin.setBounds(409, 322, 103, 33);
 		contentPane.add(btnLogin);
-		
-		JButton btnCancelar = new JButton("Cancelar");
+
+		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setIcon(new ImageIcon(Login.class.getResource("/imagenes/cerrar-24px.png")));
 		btnCancelar.setBounds(540, 322, 103, 33);
 		contentPane.add(btnCancelar);
-		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\Genesys\\Documents\\imagenesAluraHotel\\Ha-100px.png"));
+
+		JLabel lblNewLabel_1 = new JLabel("Iniciar Sesión");
+		lblNewLabel_1.setIcon(new ImageIcon("/imagenes/Ha-100px.png"));
 		lblNewLabel_1.setBounds(470, 30, 103, 94);
 		contentPane.add(lblNewLabel_1);
 	}
