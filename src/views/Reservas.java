@@ -202,15 +202,15 @@ public class Reservas extends JFrame {
 		txtFechaE.setBounds(88, 166, 235, 33);
 		panel.add(txtFechaE);
 
-		JLabel lblNewLabel_1 = new JLabel("Fecha de Check In");
-		lblNewLabel_1.setBounds(88, 142, 133, 14);
-		lblNewLabel_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		panel.add(lblNewLabel_1);
+		JLabel lblFechaEntrada = new JLabel("Fecha de Check In");
+		lblFechaEntrada.setBounds(88, 142, 133, 14);
+		lblFechaEntrada.setFont(new Font("Arial", Font.PLAIN, 14));
+		panel.add(lblFechaEntrada);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Fecha de Check Out");
-		lblNewLabel_1_1.setBounds(88, 210, 133, 14);
-		lblNewLabel_1_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		panel.add(lblNewLabel_1_1);
+		JLabel lblFechaSalida = new JLabel("Fecha de Check Out");
+		lblFechaSalida.setBounds(88, 210, 133, 14);
+		lblFechaSalida.setFont(new Font("Arial", Font.PLAIN, 14));
+		panel.add(lblFechaSalida);
 
 		txtFechaS = new JDateChooser();
 		txtFechaS.setMinSelectableDate(new java.util.Date());
@@ -224,10 +224,10 @@ public class Reservas extends JFrame {
 		panel.add(txtValor);
 		txtValor.setColumns(10);
 
-		JLabel lblNewLabel_1_1_1 = new JLabel("Valor de la Reserva");
-		lblNewLabel_1_1_1.setBounds(88, 278, 133, 14);
-		lblNewLabel_1_1_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		panel.add(lblNewLabel_1_1_1);
+		JLabel lblValorReserva = new JLabel("Valor de la Reserva");
+		lblValorReserva.setBounds(88, 278, 133, 14);
+		lblValorReserva.setFont(new Font("Arial", Font.PLAIN, 14));
+		panel.add(lblValorReserva);
 
 		txtFormaPago = new JComboBox<>();
 		txtFormaPago.setBounds(88, 373, 235, 33);
@@ -236,16 +236,16 @@ public class Reservas extends JFrame {
 				new String[] { "Tarjeta de Crédito", "Tarjeta de Débito", "Dinero en efectivo" }));
 		panel.add(txtFormaPago);
 
-		JLabel lblNewLabel_1_1_1_1 = new JLabel("Forma de pago");
-		lblNewLabel_1_1_1_1.setBounds(88, 347, 133, 24);
-		lblNewLabel_1_1_1_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		panel.add(lblNewLabel_1_1_1_1);
+		JLabel lblFormaPago = new JLabel("Forma de pago");
+		lblFormaPago.setBounds(88, 347, 133, 24);
+		lblFormaPago.setFont(new Font("Arial", Font.PLAIN, 14));
+		panel.add(lblFormaPago);
 
-		JLabel lblNewLabel_4 = new JLabel("Sistema de Reservas");
-		lblNewLabel_4.setBounds(108, 93, 199, 42);
-		lblNewLabel_4.setForeground(new Color(65, 105, 225));
-		lblNewLabel_4.setFont(new Font("Arial", Font.BOLD, 20));
-		panel.add(lblNewLabel_4);
+		JLabel lblTitulo = new JLabel("Sistema de Reservas");
+		lblTitulo.setBounds(77, 93, 257, 42);
+		lblTitulo.setForeground(new Color(65, 105, 225));
+		lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
+		panel.add(lblTitulo);
 
 		btnReservar = new JButton("Continuar");
 
@@ -256,22 +256,22 @@ public class Reservas extends JFrame {
 		btnReservar.setFont(new Font("Arial", Font.PLAIN, 14));
 		panel.add(btnReservar);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(399, 0, 491, 502);
-		panel.add(panel_1);
-		panel_1.setLayout(null);
+		JPanel panelBackground = new JPanel();
+		panelBackground.setBackground(Color.WHITE);
+		panelBackground.setBounds(399, 0, 491, 502);
+		panel.add(panelBackground);
+		panelBackground.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(0, -16, 500, 539);
-		panel_1.add(lblNewLabel);
+		panelBackground.add(lblNewLabel);
 		lblNewLabel.setBackground(Color.WHITE);
 		lblNewLabel.setIcon(new ImageIcon(Reservas.class.getResource("/imagenes/reservas-img-2.png")));
 
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(Reservas.class.getResource("/imagenes/Ha-100px.png")));
-		lblNewLabel_2.setBounds(15, 6, 104, 107);
-		panel.add(lblNewLabel_2);
+		JLabel lblLogo = new JLabel("");
+		lblLogo.setIcon(new ImageIcon(Reservas.class.getResource("/imagenes/Ha-100px.png")));
+		lblLogo.setBounds(15, 6, 104, 107);
+		panel.add(lblLogo);
 	}
 
 	@SuppressWarnings("unused")

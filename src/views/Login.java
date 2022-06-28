@@ -99,11 +99,16 @@ public class Login extends JFrame {
 		this.userController.login(user);
 
 		if (user.getId() != null) {
+
 			MenuUsuario usuario = new MenuUsuario();
 			usuario.setVisible(true);
 			dispose();
+
 		} else {
-			JOptionPane.showMessageDialog(this, "Usurio y/o contraseña incorrectos.");
+
+			JOptionPane.showMessageDialog(this, "Usurio y/o contraseña incorrectos.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+
 			JOptionPane.showMessageDialog(this,
 
 					"Intenta con: "
@@ -139,19 +144,19 @@ public class Login extends JFrame {
 		txtUsuario.setBounds(409, 181, 234, 33);
 		contentPane.add(txtUsuario);
 
-		JLabel lblNewLabel_1_1_1 = new JLabel("Usuario");
-		lblNewLabel_1_1_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblNewLabel_1_1_1.setBounds(409, 156, 57, 14);
-		contentPane.add(lblNewLabel_1_1_1);
+		JLabel lblUsuario = new JLabel("Usuario");
+		lblUsuario.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblUsuario.setBounds(409, 156, 57, 14);
+		contentPane.add(lblUsuario);
 
 		txtContrasena = new JPasswordField();
 		txtContrasena.setBounds(409, 261, 234, 33);
 		contentPane.add(txtContrasena);
 
-		JLabel lblNewLabel_1_1_1_1 = new JLabel("Contraseña");
-		lblNewLabel_1_1_1_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblNewLabel_1_1_1_1.setBounds(409, 236, 133, 14);
-		contentPane.add(lblNewLabel_1_1_1_1);
+		JLabel lblContrasena = new JLabel("Contraseña");
+		lblContrasena.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblContrasena.setBounds(409, 236, 133, 14);
+		contentPane.add(lblContrasena);
 
 		btnLogin = new JButton("Login");
 		btnLogin.setIcon(new ImageIcon(Login.class.getResource("/imagenes/perfil-del-usuario.png")));
@@ -163,9 +168,9 @@ public class Login extends JFrame {
 		btnCancelar.setBounds(540, 322, 103, 33);
 		contentPane.add(btnCancelar);
 
-		JLabel lblNewLabel_1 = new JLabel("Iniciar Sesión");
-		lblNewLabel_1.setIcon(new ImageIcon("/imagenes/Ha-100px.png"));
-		lblNewLabel_1.setBounds(470, 30, 103, 94);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblIniciarSesion = new JLabel("Iniciar Sesión");
+		lblIniciarSesion.setIcon(new ImageIcon("/imagenes/Ha-100px.png"));
+		lblIniciarSesion.setBounds(470, 30, 103, 94);
+		contentPane.add(lblIniciarSesion);
 	}
 }

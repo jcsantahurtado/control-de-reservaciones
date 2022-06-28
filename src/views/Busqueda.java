@@ -257,11 +257,11 @@ public class Busqueda extends JFrame {
 		btnEditar.setBounds(587, 416, 54, 41);
 		contentPane.add(btnEditar);
 
-		JLabel lblNewLabel_4 = new JLabel("Sistema de Búsqueda");
-		lblNewLabel_4.setForeground(new Color(12, 138, 199));
-		lblNewLabel_4.setFont(new Font("Arial", Font.BOLD, 24));
-		lblNewLabel_4.setBounds(155, 42, 301, 42);
-		contentPane.add(lblNewLabel_4);
+		JLabel lblTitulo = new JLabel("Sistema de Búsqueda");
+		lblTitulo.setForeground(new Color(12, 138, 199));
+		lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+		lblTitulo.setBounds(155, 42, 301, 42);
+		contentPane.add(lblTitulo);
 
 		btnSalir = new JButton("");
 		btnSalir.setIcon(new ImageIcon(Busqueda.class.getResource("/imagenes/cerrar-sesion 32-px.png")));
@@ -320,10 +320,10 @@ public class Busqueda extends JFrame {
 		btnCancelar.setBounds(713, 416, 54, 41);
 		contentPane.add(btnCancelar);
 
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(Busqueda.class.getResource("/imagenes/Ha-100px.png")));
-		lblNewLabel_2.setBounds(25, 10, 104, 107);
-		contentPane.add(lblNewLabel_2);
+		JLabel lblLogo = new JLabel("");
+		lblLogo.setIcon(new ImageIcon(Busqueda.class.getResource("/imagenes/Ha-100px.png")));
+		lblLogo.setBounds(25, 10, 104, 107);
+		contentPane.add(lblLogo);
 		setResizable(false);
 	}
 

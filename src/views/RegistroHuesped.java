@@ -7,6 +7,7 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -255,30 +256,30 @@ public class RegistroHuesped extends JFrame {
 		txtNacionalidad.setBounds(576, 350, 255, 33);
 		contentPane.add(txtNacionalidad);
 
-		JLabel lblNewLabel_1 = new JLabel("Nombre");
-		lblNewLabel_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblNewLabel_1.setBounds(578, 125, 253, 14);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblNombre.setBounds(578, 125, 253, 14);
+		contentPane.add(lblNombre);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Apellido");
-		lblNewLabel_1_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblNewLabel_1_1.setBounds(576, 194, 255, 14);
-		contentPane.add(lblNewLabel_1_1);
+		JLabel lblApellido = new JLabel("Apellido");
+		lblApellido.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblApellido.setBounds(576, 194, 255, 14);
+		contentPane.add(lblApellido);
 
-		JLabel lblNewLabel_1_1_1 = new JLabel("Fecha de Nascimiento");
-		lblNewLabel_1_1_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblNewLabel_1_1_1.setBounds(576, 256, 255, 14);
-		contentPane.add(lblNewLabel_1_1_1);
+		JLabel lblFechaNacimiento = new JLabel("Fecha de Nascimiento");
+		lblFechaNacimiento.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblFechaNacimiento.setBounds(576, 256, 255, 14);
+		contentPane.add(lblFechaNacimiento);
 
-		JLabel lblNewLabel_1_1_1_1 = new JLabel("Nacionalidad");
-		lblNewLabel_1_1_1_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblNewLabel_1_1_1_1.setBounds(576, 325, 255, 14);
-		contentPane.add(lblNewLabel_1_1_1_1);
+		JLabel lblNacionalidad = new JLabel("Nacionalidad");
+		lblNacionalidad.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblNacionalidad.setBounds(576, 325, 255, 14);
+		contentPane.add(lblNacionalidad);
 
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/registro.png")));
-		lblNewLabel.setBounds(0, 0, 502, 556);
-		contentPane.add(lblNewLabel);
+		JLabel lblBackground = new JLabel("New label");
+		lblBackground.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/registro.png")));
+		lblBackground.setBounds(0, 0, 502, 556);
+		contentPane.add(lblBackground);
 
 		btnCancelar = new JButton("");
 		btnCancelar.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/cancelar.png")));
@@ -298,10 +299,10 @@ public class RegistroHuesped extends JFrame {
 		btnSalir.setBounds(828, 543, 54, 41);
 		contentPane.add(btnSalir);
 
-		JLabel lblNewLabel_1_2 = new JLabel("Teléfono");
-		lblNewLabel_1_2.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblNewLabel_1_2.setBounds(578, 394, 253, 14);
-		contentPane.add(lblNewLabel_1_2);
+		JLabel lblTelefono = new JLabel("Teléfono");
+		lblTelefono.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblTelefono.setBounds(578, 394, 253, 14);
+		contentPane.add(lblTelefono);
 
 		txtTelefono = new JTextField();
 		txtTelefono.setColumns(10);
@@ -309,21 +310,21 @@ public class RegistroHuesped extends JFrame {
 		txtTelefono.setBounds(576, 419, 255, 33);
 		contentPane.add(txtTelefono);
 
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/Ha-100px.png")));
-		lblNewLabel_2.setBounds(780, 11, 104, 107);
-		contentPane.add(lblNewLabel_2);
+		JLabel lblLogo = new JLabel("");
+		lblLogo.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/Ha-100px.png")));
+		lblLogo.setBounds(780, 11, 104, 107);
+		contentPane.add(lblLogo);
 
 		lblTituloFormulario = new JLabel("Registro de Huésped");
 		lblTituloFormulario.setForeground(new Color(12, 138, 199));
 		lblTituloFormulario.setFont(new Font("Arial", Font.BOLD, 20));
-		lblTituloFormulario.setBounds(576, 74, 198, 42);
+		lblTituloFormulario.setBounds(576, 74, 221, 42);
 		contentPane.add(lblTituloFormulario);
 
-		JLabel lblNewLabel_1_2_1 = new JLabel("Número de Reserva");
-		lblNewLabel_1_2_1.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblNewLabel_1_2_1.setBounds(578, 455, 253, 14);
-		contentPane.add(lblNewLabel_1_2_1);
+		JLabel lblNreserva = new JLabel("Número de Reserva");
+		lblNreserva.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblNreserva.setBounds(578, 455, 253, 14);
+		contentPane.add(lblNreserva);
 
 		txtNreserva = new JTextField();
 		txtNreserva.setEnabled(false);
@@ -335,7 +336,7 @@ public class RegistroHuesped extends JFrame {
 
 	protected void actualizar(String id) {
 
-		java.sql.Date sqlDate = new java.sql.Date(txtFechaN.getDate().getTime());
+		Date sqlDate = new Date(txtFechaN.getDate().getTime());
 
 		var huesped = new Huesped(Integer.parseInt(id), txtNombre.getText(), txtApellido.getText(), sqlDate,
 				txtNacionalidad.getSelectedItem().toString(), txtTelefono.getText(),
@@ -358,7 +359,7 @@ public class RegistroHuesped extends JFrame {
 			return;
 		}
 
-		java.sql.Date sqlDate = new java.sql.Date(txtFechaN.getDate().getTime());
+		Date sqlDate = new Date(txtFechaN.getDate().getTime());
 
 		var huesped = new Huesped(txtNombre.getText(), txtApellido.getText(), sqlDate,
 				txtNacionalidad.getSelectedItem().toString(), txtTelefono.getText(),
